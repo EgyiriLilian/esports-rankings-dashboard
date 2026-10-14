@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberRank 2077 // Global Esports Leaderboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        cyberpunk: {
+                            dark: '#0a0b10',
+                            card: '#121520',
+                            border: '#1f293d',
+                            cyan: '#00f0ff',
+                            purple: '#b000ff',
+                            gold: '#ffd700',
+                            silver: '#c0c0c0',
+                            bronze: '#cd7f32',
+                            pink: '#ff0055'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0a0b10;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(2, 222, 238, 0.25);
+        }
+        .neon-glow-purple {
+            box-shadow: 0 0 20px rgba(179, 60, 235, 0.3);
+        }
+        .neon-glow-pink {
+            box-shadow: 0 0 15px rgba(255, 75, 135, 0.3);
+        }
+        .neon-border-cyan:focus {
+            box-shadow: 0 0 10px #00f0ff;
+            border-color: #00f0ff;
+        }
+        .cyber-grid {
+            background-image: linear-gradient(to right, rgba(31, 41, 61, 0.15) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(31, 41, 61, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0b10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+
+    <header class="border-b border-cyberpunk-border bg-cyberpunk-card/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded bg-gradient-to-tr from-cyberpunk-cyan to-cyberpunk-purple flex items-center justify-center neon-glow-cyan">
+                    <i class="fa-solid fa-gamepad text-black text-xl font-bold"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-wider bg-gradient-to-r from-cyberpunk-cyan via-white to-cyberpunk-purple bg-clip-text text-transparent">
+                        CYBER<span class="text-cyberpunk-cyan">RANK</span> 2077
+                    </h1>
+                    <p class="text-xs text-cyberpunk-cyan font-mono tracking-widest uppercase">Array Data Structure Engine</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-6 text-sm font-mono text-gray-400">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-xs text-emerald-400 animate-pulse"></i> Array Status: <strong class="text-white">Synced</strong></span>
+                <span class="border-l border-cyberpunk-border pl-6 flex items-center gap-2"><i class="fa-solid fa-code text-cyberpunk-cyan"></i> Algorithmic Complexity: <strong class="text-white">O(N log N)</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Controls & Array Stats Panel -->
+        <div class="lg:col-span-1 space-y-8">
+            
+            <!-- Add Player Form Card -->
+            <div class="bg-cyberpunk-card border border-cyberpunk-border rounded-xl p-6 neon-glow-purple relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-cyberpunk-purple/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold font-orbitron flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-user-plus text-cyberpunk-cyan"></i> Register Player
+                    </h2>
+                    <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyberpunk-cyan/10 text-cyberpunk-cyan border border-cyberpunk-cyan/30">.push()</span>
+                </div>
+
+                <form id="playerForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">Player Username</label>
+                        <input type="text" id="usernameInput" required placeholder="e.g. V_Silverhand" 
+                            class="w-full bg-[#0a0b10] border border-cyberpunk-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none neon-border-cyan transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">Game Title / Esports Arena</label>
+                        <select id="gameInput" required
+                            class="w-full bg-[#0a0b10] border border-cyberpunk-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none neon-border-cyan transition-all cursor-pointer">
+                            <option value="" disabled selected>Select Game Arena</option>
+                            <option value="Cyberpunk 2077">Cyberpunk 2077</option>
+                            <option value="Valorant">Valorant</option>
+                            <option value="Apex Legends">Apex Legends</option>
+                            <option value="Street Fighter 6">Street Fighter 6</option>
+                            <option value="Counter-Strike 2">Counter-Strike 2</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-1">Score / MMR Rating</label>
+                        <input type="number" id="scoreInput" required min="0" max="99999" placeholder="e.g. 9840" 
+                            class="w-full bg-[#0a0b10] border border-cyberpunk-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none neon-border-cyan transition-all">
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full py-3.5 px-4 rounded-lg bg-gradient-to-r from-cyberpunk-cyan to-cyberpunk-purple text-black font-orbitron font-bold text-sm tracking-wide hover:opacity-95 active:scale-[0.99] transition-all shadow-lg shadow-cyberpunk-cyan/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> Add Score to Array
+                    </button>
+                </form>
+            </div>
+
+            <!-- Array Metrics / Stats Panel -->
+            <div class="bg-cyberpunk-card border border-cyberpunk-border rounded-xl p-6 relative overflow-hidden">
+                <div class="absolute bottom-0 right-0 w-32 h-32 bg-cyberpunk-cyan/10 rounded-full blur-2xl -mr-10 -mb-10 pointer-events-none"></div>
+                <h3 class="text-sm font-bold font-orbitron uppercase tracking-wider text-gray-300 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-cyberpunk-purple"></i> Live Array Metrics
+                </h3>
+                <div class="grid grid-cols-1 gap-3 font-mono">
+                    <div class="bg-[#0a0b10] border border-cyberpunk-border/60 rounded-lg p-3.5 flex items-center justify-between">
+                        <span class="text-xs text-gray-400">Total Players <code class="text-cyberpunk-cyan">(.length)</code></span>
+                        <span id="statTotalPlayers" class="text-lg font-bold text-white">0</span>
+                    </div>
+                    <div class="bg-[#0a0b10] border border-cyberpunk-border/60 rounded-lg p-3.5 flex items-center justify-between">
+                        <span class="text-xs text-gray-400">Highest Score <code class="text-cyberpunk-cyan">(Math.max)</code></span>
+                        <span id="statHighestScore" class="text-lg font-bold text-cyberpunk-gold">0</span>
+                    </div>
+                    <div class="bg-[#0a0b10] border border-cyberpunk-border/60 rounded-lg p-3.5 flex items-center justify-between">
+                        <span class="text-xs text-gray-400">Average Score <code class="text-cyberpunk-cyan">(.reduce())</code></span>
+                        <span id="statAvgScore" class="text-lg font-bold text-cyberpunk-cyan">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Array Operation Info Card -->
+            <div class="bg-cyberpunk-card/50 border border-cyberpunk-border rounded-xl p-5 text-xs text-gray-400 font-mono space-y-2">
+                <p class="font-bold text-white font-orbitron text-sm flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-terminal text-cyberpunk-purple"></i> Array Methods Used
+                </p>
+                <div class="flex items-center justify-between py-1 border-b border-cyberpunk-border/40">
+                    <span>Sorting Algorithm</span>
+                    <span class="text-cyberpunk-cyan">.sort((a,b) => b.score - a.score)</span>
+                </div>
+                <div class="flex items-center justify-between py-1 border-b border-cyberpunk-border/40">
+                    <span>Search Filter</span>
+                    <span class="text-cyberpunk-purple">.filter() &amp; .toLowerCase()</span>
+                </div>
+                <div class="flex items-center justify-between py-1 border-b border-cyberpunk-border/40">
+                    <span>Podium Slice</span>
+                    <span class="text-cyberpunk-gold">.slice(0, 3)</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                    <span>Record Removal</span>
+                    <span class="text-cyberpunk-pink">.splice(index, 1)</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Podium & Full Leaderboard Table -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- Top 3 Podium Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold font-orbitron uppercase tracking-wider flex items-center gap-2 text-white">
+                        <i class="fa-solid fa-trophy text-cyberpunk-gold"></i> Elite Champions Podium
+                    </h2>
+                    <span class="text-xs font-mono text-gray-400">Top 3 Index Slices</span>
+                </div>
+                
+                <div id="podiumContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Dynamic Podium Cards Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Full Leaderboard Section -->
+            <div class="bg-cyberpunk-card border border-cyberpunk-border rounded-xl p-6 space-y-6">
+                
+                <!-- Table Header & Search Filter Bar -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold font-orbitron uppercase tracking-wider text-white">Global Leaderboard</h2>
+                        <p class="text-xs text-gray-400 font-mono">Real-time indexed ranking array</p>
+                    </div>
+                    
+                    <div class="relative w-full sm:w-72">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </span>
+                        <input type="text" id="searchInput" placeholder="Search user or game..." 
+                            class="w-full bg-[#0a0b10] border border-cyberpunk-border rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none neon-border-cyan transition-all">
+                    </div>
+                </div>
+
+                <!-- Leaderboard Table -->
+                <div class="overflow-x-auto rounded-lg border border-cyberpunk-border">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-[#0a0b10] border-b border-cyberpunk-border text-xs font-mono text-gray-400 uppercase tracking-wider">
+                                <th class="py-3 px-4">Rank</th>
+                                <th class="py-3 px-4">Player Username</th>
+                                <th class="py-3 px-4">Game Arena</th>
+                                <th class="py-3 px-4 text-right">Score / MMR</th>
+                                <th class="py-3 px-4 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardTableBody" class="divide-y divide-cyberpunk-border/60 text-sm font-rajdhani">
+                            <!-- Rows Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State Message -->
+                <div id="emptyState" class="hidden text-center py-12 space-y-3">
+                    <div class="w-12 h-12 rounded-full bg-cyberpunk-border/40 mx-auto flex items-center justify-center text-gray-400 text-lg">
+                        <i class="fa-solid fa-ghost"></i>
+                    </div>
+                    <p class="text-gray-400 font-mono text-sm">No player records found in array.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="notificationModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-cyberpunk-card border border-cyberpunk-border rounded-xl p-6 max-w-sm w-full space-y-4 neon-glow-cyan">
+            <div class="flex items-center space-x-3">
+                <div id="modalIcon" class="w-10 h-10 rounded-lg bg-cyberpunk-cyan/20 text-cyberpunk-cyan flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-info"></i>
+                </div>
+                <div>
+                    <h3 id="modalTitle" class="font-orbitron font-bold text-white text-base">System Notification</h3>
+                    <p id="modalMessage" class="text-xs text-gray-400 font-mono mt-0.5">Operation executed successfully.</p>
+                </div>
+            </div>
+            <button onclick="closeModal()" 
+                class="w-full py-2.5 rounded-lg bg-cyberpunk-cyan text-black font-orbitron font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-all">
+                Acknowledge
+            </button>
+        </div>
+    </div>
+
+    <footer class="border-t border-cyberpunk-border bg-cyberpunk-card/40 py-6 mt-12 text-center text-xs text-gray-500 font-mono">
+        <p>CyberRank 2077 // Data Structures Array Assignment Project &bull; Built with HTML5, Tailwind CSS, and Vanilla JavaScript</p>
+    </footer>
+
+    <script>
+        // Initial Sample Data Array representing players
+        let playersArray = [
+            { id: 1, username: "V_Cyberpunk", game: "Cyberpunk 2077", score: 9850 },
+            { id: 2, username: "Phoenix_Val", game: "Valorant", score: 9120 },
+            { id: 3, username: "Apex_Wraith", game: "Apex Legends", score: 8740 },
+            { id: 4, username: "Daigo_Street", game: "Street Fighter 6", score: 8300 },
+            { id: 5, username: "CyberSamurai", game: "Counter-Strike 2", score: 7950 },
+            { id: 6, username: "NeonViper", game: "Valorant", score: 7420 },
+            { id: 7, username: "GlitchRunner", game: "Cyberpunk 2077", score: 6890 }
+        ];
+
+        // Load from LocalStorage if available
+        function loadStoredData() {
+            const stored = localStorage.getItem('cyberpunk_leaderboard_array');
+            if (stored) {
+                try {
+                    playersArray = JSON.parse(stored);
+                } catch (e) {
+                    console.error("Error parsing localStorage data", e);
+                }
+            }
+        }
+
+        // Save to LocalStorage
+        function saveStoredData() {
+            localStorage.setItem('cyberpunk_leaderboard_array', JSON.stringify(playersArray));
+        }
+
+        // Custom Modal Function (replaces alert)
+        function showModal(title, message, isError = false) {
+            const modal = document.getElementById('notificationModal');
+            const titleEl = document.getElementById('modalTitle');
+            const msgEl = document.getElementById('modalMessage');
+            const iconEl = document.getElementById('modalIcon');
+            
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            
+            if (isError) {
+                iconEl.className = "w-10 h-10 rounded-lg bg-cyberpunk-pink/20 text-cyberpunk-pink flex items-center justify-center text-lg font-bold";
+                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconEl.className = "w-10 h-10 rounded-lg bg-cyberpunk-cyan/20 text-cyberpunk-cyan flex items-center justify-center text-lg font-bold";
+                iconEl.innerHTML = '<i class="fa-solid fa-check"></i>';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('notificationModal').classList.add('hidden');
+        }
+
+        // Core Render Function
+        function renderDashboard() {
+            // 1. Sort Array in descending order by score (.sort() method)
+            playersArray.sort((a, b) => b.score - a.score);
+
+            // 2. Compute Metrics using array methods
+            const totalPlayers = playersArray.length;
+            const highestScore = totalPlayers > 0 ? playersArray[0].score : 0;
+            const avgScore = totalPlayers > 0 ? Math.round(playersArray.reduce((acc, curr) => acc + curr.score, 0) / totalPlayers) : 0;
+
+            document.getElementById('statTotalPlayers').textContent = totalPlayers;
+            document.getElementById('statHighestScore').textContent = highestScore.toLocaleString();
+            document.getElementById('statAvgScore').textContent = avgScore.toLocaleString();
+
+            // 3. Render Podium (.slice(0, 3) method)
+            renderPodium();
+
+            // 4. Render Table based on search filter (.filter() method)
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const filteredPlayers = playersArray.filter(p => 
+                p.username.toLowerCase().includes(searchQuery) || 
+                p.game.toLowerCase().includes(searchQuery)
+            );
+
+            renderTable(filteredPlayers);
+        }
+
+        // Render Podium Cards
+        function renderPodium() {
+            const container = document.getElementById('podiumContainer');
+            container.innerHTML = '';
+
+            const topThree = playersArray.slice(0, 3);
+            const podiumConfigs = [
+                { rank: 1, title: "1st Place", color: "text-cyberpunk-gold border-cyberpunk-gold/50 bg-cyberpunk-gold/5", badgeColor: "bg-cyberpunk-gold text-black", icon: "fa-crown" },
+                { rank: 2, title: "2nd Place", color: "text-cyberpunk-silver border-cyberpunk-silver/50 bg-cyberpunk-silver/5", badgeColor: "bg-cyberpunk-silver text-black", icon: "fa-medal" },
+                { rank: 3, title: "3rd Place", color: "text-cyberpunk-bronze border-cyberpunk-bronze/50 bg-cyberpunk-bronze/5", badgeColor: "bg-cyberpunk-bronze text-black", icon: "fa-award" }
+            ];
+
+            podiumConfigs.forEach((config, index) => {
+                const player = topThree[index];
+                if (!player) {
+                    container.innerHTML += `
+                        <div class="bg-cyberpunk-card border border-cyberpunk-border/40 rounded-xl p-5 flex flex-col items-center justify-center text-center opacity-40">
+                            <span class="w-8 h-8 rounded-full bg-cyberpunk-border flex items-center justify-center font-mono text-xs font-bold mb-3">${config.rank}</span>
+                            <p class="font-orbitron text-xs text-gray-500 uppercase">Available Slot</p>
+                            <p class="text-xs font-mono text-gray-600 mt-1">No player ranked</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML += `
+                    <div class="bg-cyberpunk-card border ${config.color} rounded-xl p-5 flex flex-col justify-between relative overflow-hidden transition-all hover:scale-[1.02]">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold font-mono ${config.badgeColor} flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid ${config.icon}"></i> #${config.rank}
+                            </span>
+                            <span class="text-xs font-mono text-gray-400">${player.game}</span>
+                        </div>
+                        <div class="space-y-1 mb-4">
+                            <h4 class="font-orbitron font-bold text-base text-white truncate" title="${player.username}">${player.username}</h4>
+                            <p class="text-xl font-black font-orbitron text-white tracking-wide">${player.score.toLocaleString()} <span class="text-xs font-normal font-mono text-gray-400">MMR</span></p>
+                        </div>
+                        <div class="w-full bg-cyberpunk-border/30 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-cyberpunk-cyan to-cyberpunk-purple h-full rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Leaderboard Table Rows
+        function renderTable(displayArray) {
+            const tbody = document.getElementById('leaderboardTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            if (displayArray.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            displayArray.forEach((player) => {
+                // Find actual global index in sorted playersArray
+                const globalIndex = playersArray.findIndex(p => p.id === player.id);
+                const rank = globalIndex + 1;
+
+                let rankBadge = `<span class="font-mono font-bold text-gray-400">#${rank}</span>`;
+                if (rank === 1) rankBadge = `<span class="px-2.5 py-0.5 rounded bg-cyberpunk-gold/20 text-cyberpunk-gold font-bold font-mono text-xs border border-cyberpunk-gold/40">#1</span>`;
+                else if (rank === 2) rankBadge = `<span class="px-2.5 py-0.5 rounded bg-cyberpunk-silver/20 text-cyberpunk-silver font-bold font-mono text-xs border border-cyberpunk-silver/40">#2</span>`;
+                else if (rank === 3) rankBadge = `<span class="px-2.5 py-0.5 rounded bg-cyberpunk-bronze/20 text-cyberpunk-bronze font-bold font-mono text-xs border border-cyberpunk-bronze/40">#3</span>`;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-cyberpunk-border/20 transition-all border-b border-cyberpunk-border/40 last:border-none";
+                tr.innerHTML = `
+                    <td class="py-4 px-4 whitespace-nowrap">${rankBadge}</td>
+                    <td class="py-4 px-4 font-bold text-white flex items-center gap-2">
+                        <div class="w-7 h-7 rounded bg-cyberpunk-purple/20 text-cyberpunk-cyan flex items-center justify-center text-xs font-bold font-mono">
+                            ${player.username.charAt(0).toUpperCase()}
+                        </div>
+                        ${player.username}
+                    </td>
+                    <td class="py-4 px-4 text-gray-300 font-mono text-xs">${player.game}</td>
+                    <td class="py-4 px-4 text-right font-orbitron font-bold text-cyberpunk-cyan">${player.score.toLocaleString()}</td>
+                    <td class="py-4 px-4 text-center">
+                        <button onclick="deletePlayer(${player.id})" title="Remove record" 
+                            class="w-8 h-8 rounded bg-cyberpunk-pink/10 text-cyberpunk-pink hover:bg-cyberpunk-pink hover:text-black transition-all inline-flex items-center justify-center">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Add Player Form Handler (.push() operation)
+        document.getElementById('playerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('usernameInput').value.trim();
+            const game = document.getElementById('gameInput').value;
+            const score = parseInt(document.getElementById('scoreInput').value);
+
+            if (!username || !game || isNaN(score)) {
+                showModal("Validation Error", "Please fill in all required fields with valid values.", true);
+                return;
+            }
+
+            // Create new player record object
+            const newPlayer = {
+                id: Date.now(), // Unique ID
+                username: username,
+                game: game,
+                score: score
+            };
+
+            // Push into array
+            playersArray.push(newPlayer);
+            saveStoredData();
+
+            // Reset form
+            this.reset();
+
+            // Re-render dashboard
+            renderDashboard();
+            showModal("Player Registered", `Successfully added ${username} to the leaderboard array.`);
+        });
+
+        // Delete Player Handler (.splice() operation)
+        function deletePlayer(id) {
+            const index = playersArray.findIndex(p => p.id === id);
+            if (index !== -1) {
+                const removedName = playersArray[index].username;
+                // Splice 1 element at found index
+                playersArray.splice(index, 1);
+                saveStoredData();
+                renderDashboard();
+                showModal("Record Removed", `Removed player ${removedName} from the array.`);
+            }
+        }
+
+        // Search Input Event Listener (.filter() live trigger)
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderDashboard();
+        });
+
+        // Window Onload Initialization
+        window.onload = function() {
+            loadStoredData();
+            renderDashboard();
+        };
+    </script>
+
+</body>
+</html>
